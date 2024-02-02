@@ -27,6 +27,12 @@ You need both `Python` and `pip`. Then you can use pip to install the
 dependencies:
 
 ```bash
+pip install fastapi uvicorn
+```
+
+Or you can install directly from the requirements file:
+
+```bash
 pip install -r requirements.txt
 ```
 
