@@ -22,8 +22,8 @@ greater than the maximum.
 * Apply type validation and constraint validation. Respond with a 400-family
 code to handle invalid values.
 
-* Root should display an html message that directs user either to the API
-documentation or to the random integers service.
+* Root should display an html message that directs the user to either the API
+documentation or the random integers service.
 
 ## Installation
 
@@ -57,7 +57,7 @@ In FastAPI:
  * Query strings are known as *query parameters*.
 
 Decorators are used to link together *operation*, *path*, and *path
-operation functions*.
+operation function*.
 
 Routing uses the general pattern:
 
