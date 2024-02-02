@@ -18,6 +18,9 @@ greater than the maximum.
 * Apply type validation and constraint validation. Respond with a 400-family
 code to handle invalid values.
 
+* Root should display an html message that directs user either to the API
+documentation or to the random integers service.
+
 ## Installation
 
 You need both `Python` and `pip`. Then you can use pip to install the
