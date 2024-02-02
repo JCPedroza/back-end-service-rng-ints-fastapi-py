@@ -1,7 +1,11 @@
 # Back-End Practice: Random Integers Service with Python and FastAPI
 
-This is an exercise to showcase the basic routing and request-response features
-of the FastAPI framework.
+This is an exercise to showcase:
+
+* The basic routing and request-response features of the [FastAPI][0]
+framework.
+
+* [Python][1] as a back-end language.
 
 ## Task
 
@@ -23,17 +27,17 @@ documentation or to the random integers service.
 
 ## Installation
 
-You need both `Python` and `pip`. Then you can use pip to install the
+You need both [Python][2] and [pip][3]. Then you can use pip to install the
 dependencies:
 
 ```bash
-pip install fastapi uvicorn
+python -m pip install fastapi uvicorn
 ```
 
 Or you can install directly from the requirements file:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ## Usage
@@ -46,24 +50,31 @@ uvicorn main:app
 
 ## Notes
 
-Remember that in FastAPI:
+In FastAPI:
  * HTTP verbs aka HTTP methods are known as *operations*.
  * Handlers are known as *path operation functions*.
  * Variable parts of a path are known as *path parameters*.
  * Query strings are known as *query parameters*.
 
-Routing in FastAPI uses the general pattern:
+Decorators are used to link together *operation*, *path*, and *path
+operation functions*.
+
+Routing uses the general pattern:
 
 ```text
 @<FastAPI instance>.<operation>(<path>)
 <path operation function>
 ```
 
-Path parameters are declared in the path string between `{}` and also declared
-as parameters to the path operation function.
+The whole line `@<FastAPI instance>.<operation>(<path>)` is known as *path
+operation decorator*, and decorates the *path operation function*, which
+is assigned to that specific *operation* and *path*.
 
-Query parameters are only declared as parameters to the path operation
-function, and the ones without a default value assigned to them will be
+*Path parameters* are declared in the *path* between `{}` and also declared
+as parameters to the *path operation function*.
+
+*Query parameters* are only declared as parameters to the *path operation
+function*, and the ones without a default value assigned to them will be
 declared as required.
 
 Example:
@@ -78,9 +89,9 @@ def get_user_idn(num: int, qry1: bool, qry2: str = "default"):
     }
 ```
 
-When handling bad input, it is preferable to raise an HTTPException than
-setting the status yourself and explicitly creating a Response instance. This
-way the HTTPException is documented in OpenAPI.
+When handling bad input, it is preferable to raise an `HTTPException` than
+setting the status yourself and explicitly creating a `Response` instance. This
+way the `HTTPException` is documented in `OpenAPI`.
 
 ## Useful Imports
 
@@ -88,3 +99,10 @@ way the HTTPException is documented in OpenAPI.
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import HTMLResponse
 ```
+
+---
+
+[0]: https://fastapi.tiangolo.com/
+[1]: https://www.python.org/
+[2]: https://www.python.org/downloads/
+[3]: https://pip.pypa.io/en/stable/installation/
