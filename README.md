@@ -43,3 +43,48 @@ Once everything is installed, you can run the server using:
 ```bash
 uvicorn main:app
 ```
+
+## Notes
+
+Remember that in FastAPI:
+ * HTTP verbs aka HTTP methods are known as *operations*.
+ * Handlers are known as *path operation functions*.
+ * Variable parts of a path are known as *path parameters*.
+ * Query strings are known as *query parameters*.
+
+Routing in FastAPI uses the general pattern:
+
+```text
+@<FastAPI instance>.<operation>(<path>)
+<path operation function>
+```
+
+Path parameters are declared in the path string between `{}` and also declared
+as parameters to the path operation function.
+
+Query parameters are only declared as parameters to the path operation
+function, and the ones without a default value assigned to them will be
+declared as required.
+
+Example:
+
+```Python
+@app.get("/somepath/{num}")
+def get_user_idn(num: int, qry1: bool, qry2: str = "default"):
+    return {
+        "path parameter": num,
+        "query parameter 1": qry1,
+        "query parameter 2": qry2
+    }
+```
+
+When handling bad input, it is preferable to raise an HTTPException than
+setting the status yourself and explicitly creating a Response instance. This
+way the HTTPException is documented in OpenAPI.
+
+## Useful Imports
+
+```Python
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import HTMLResponse
+```
