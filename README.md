@@ -16,8 +16,8 @@ of random integer numbers.
 greater than zero but no larger than 100.
 
 * The minimum and maximum values of the randomly generated numbers are
-specified as query parameters, and must be integers where the minimum is never
-greater than the maximum.
+specified as query parameters, and must be integers where the maximum value
+is always greater than the minimum value.
 
 * Apply type validation and constraint validation. Respond with a 400-family
 code to handle invalid values.
