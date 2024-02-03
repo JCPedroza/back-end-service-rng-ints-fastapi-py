@@ -2,6 +2,9 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import HTMLResponse
 from random import randrange
 
+START = -99
+STOP = 100
+MIN_SIZE = 1
 MAX_SIZE = 100
 app = FastAPI()
 
@@ -22,24 +25,24 @@ async def get_root():
 
 
 @app.get("/rng/ints/{size}")
-async def get_rng_ints_SIZE(size: int, start: int = -10, end: int = 11):
+async def get_rng_ints_SIZE(size: int, start: int = START, stop: int = STOP):
     """
     Get a list of random integers.
 
     - **size (path)**: Number of random integers that the list will contain.
     - **start (query)**: Minimum value of the random integers (inclusive).
-    - **end (query)**: Maximum value of the random integers (exclusive).
+    - **stop (query)**: Maximum value of the random integers (exclusive).
     """
-    if size < 0 or size > MAX_SIZE:
+    if size < MIN_SIZE or size > MAX_SIZE:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
-            f"size needs to be in the range [0, 100] (size:{size})",
+            f"size must be in the range [{MIN_SIZE}, {MAX_SIZE}] (size:{size})",
         )
 
-    if end < start:
+    if stop <= start:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
-            f"start can't be greater than end (start:{start} end:{end})",
+            f"stop must be greater than start (start:{start} stop:{stop})",
         )
 
-    return {"ints": [randrange(start, end) for _ in range(size)]}
+    return {"ints": [randrange(start, stop) for _ in range(size)]}
