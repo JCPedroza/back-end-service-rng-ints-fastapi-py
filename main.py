@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Path, status
 from fastapi.responses import HTMLResponse
+
+from typing import Annotated
 from random import randrange
 
 START = -99
@@ -21,26 +23,27 @@ async def get_root():
             <title>Root</title>
         </head>
         <body>
-            <p>Docs at <a href="{DOCS_PATH}">{DOCS_PATH}<a></p>
+            <p>Docs at <ul>
+                <li><a href="{DOCS_PATH}">{DOCS_PATH}<a></li>
+                <li><a href="{REDOCS_PATH}">{REDOCS_PATH}<a></li>
+            </ul></p>
         </body>
     </html>
     """
 
 
 @app.get("/rng/ints/{size}")
-async def get_rng_ints_SIZE(size: int, start: int = START, stop: int = STOP):
+async def get_rng_ints_SIZE(
+    size: Annotated[int, Path(ge=MIN_SIZE, le=MAX_SIZE)],
+    start: int = START,
+    stop: int = STOP,
+):
     """
     Get a list of random integers.
     - **size (path)**: Number of random integers that the list will contain.
     - **start (query)**: Minimum value of the random integers (inclusive).
     - **stop (query)**: Maximum value of the random integers (exclusive).
     """
-    if size < MIN_SIZE or size > MAX_SIZE:
-        raise HTTPException(
-            status.HTTP_422_UNPROCESSABLE_ENTITY,
-            f"size must be in the range [{MIN_SIZE}, {MAX_SIZE}] (size:{size})",
-        )
-
     if stop <= start:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
