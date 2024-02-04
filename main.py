@@ -6,19 +6,22 @@ START = -99
 STOP = 100
 MIN_SIZE = 1
 MAX_SIZE = 100
-app = FastAPI()
+DOCS_PATH = "/docs"
+REDOCS_PATH = "/redocs"
+
+app = FastAPI(docs_url=DOCS_PATH, redoc_url=REDOCS_PATH)
 
 
 @app.get("/", response_class=HTMLResponse)
 async def get_root():
-    return """
+    return f"""
     <!DOCTYPE html>
     <html>
         <head>
             <title>Root</title>
         </head>
         <body>
-            <p>Docs at /docs</p>
+            <p>Docs at <a href="{DOCS_PATH}">{DOCS_PATH}<a></p>
         </body>
     </html>
     """
@@ -28,7 +31,6 @@ async def get_root():
 async def get_rng_ints_SIZE(size: int, start: int = START, stop: int = STOP):
     """
     Get a list of random integers.
-
     - **size (path)**: Number of random integers that the list will contain.
     - **start (query)**: Minimum value of the random integers (inclusive).
     - **stop (query)**: Maximum value of the random integers (exclusive).
