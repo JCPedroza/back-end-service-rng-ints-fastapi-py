@@ -1,5 +1,11 @@
+# core dependencies
 fastapi
 uvicorn
-black
+
+# type check
 mypy
+pyright
+
+# lint & format
+black
 flake8
