@@ -36,8 +36,8 @@ async def get_root():
 @app.get("/rng/ints/{size}")
 async def get_rng_ints_SIZE(
     size: Annotated[int, Path(ge=MIN_SIZE, lt=MAX_SIZE)],
-    start: Annotated[int, Query(ge=MIN_VAL, lt=MIN_VAL)],
-    stop: Annotated[int, Query(ge=MIN_VAL, lt=MIN_VAL)],
+    start: Annotated[int, Query(ge=MIN_VAL, lt=MAX_VAL)],
+    stop: Annotated[int, Query(ge=MIN_VAL, lt=MAX_VAL)],
 ):
     """
     Get list of random integers.
