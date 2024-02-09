@@ -29,17 +29,19 @@ documentation or the random integers service.
 
 ### Valid Values
 
-```json
+```text
 /rng/ints/5?start=-10&stop=11
 ```
 
-```json
+```text
 HTTP/1.1 200 OK
 content-length: 21
 content-type: application/json
 date: Fri, 09 Feb 2024 04:19:12 GMT
 server: uvicorn
+```
 
+```json
 {
     "ints": [
         9,
@@ -53,17 +55,19 @@ server: uvicorn
 
 ### Invalid Value Range
 
-```json
+```text
 /rng/ints/5?start=7&stop=7
 ```
 
-```json
+```text
 HTTP/1.1 422 Unprocessable Entity
 content-length: 55
 content-type: application/json
 date: Fri, 09 Feb 2024 04:30:42 GMT
 server: uvicorn
+```
 
+```json
 {
     "detail": "(stop=7) must be greater than (start=7)"
 }
@@ -71,16 +75,18 @@ server: uvicorn
 
 ### Invalid Size
 
-```json
+```text
 /rng/ints/0?start=1&stop=11
 ```
 
-```json
+```text
 content-length: 203
 content-type: application/json
 date: Fri, 09 Feb 2024 04:32:51 GMT
 server: uvicorn
+```
 
+```json
 {
     "detail": [
         {
@@ -102,17 +108,19 @@ server: uvicorn
 
 ### Missing Required Query Parameters
 
-```json
+```text
 localhost:8000/rng/ints/10
 ```
 
-```json
+```text
 HTTP/1.1 422 Unprocessable Entity
 content-length: 269
 content-type: application/json
 date: Fri, 09 Feb 2024 04:36:28 GMT
 server: uvicorn
+```
 
+```json
 {
     "detail": [
         {
