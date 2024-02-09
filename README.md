@@ -10,14 +10,14 @@ framework.
 ## Task
 
 * Create a service at the `/rng/ints/:size` endpoint that will generate a list
-of random integer numbers.
+of random integer numbers, and serve it as JSON.
 
 * The size of the list is specified as path parameter, and must be an integer
 greater than zero but no larger than 100.
 
 * The minimum and maximum values of the randomly generated numbers are
-specified as query parameters, and must be integers where the maximum value
-is always greater than the minimum value.
+specified as required query parameters, and must be integers where the maximum
+value is always greater than the minimum value.
 
 * Apply type validation and constraint validation. Respond with a 400-family
 code to handle invalid values.
@@ -25,16 +25,131 @@ code to handle invalid values.
 * Root should display an html message that directs the user to either the API
 documentation or the random integers service.
 
+## Example URL - Response
+
+### Valid Values
+
+```json
+/rng/ints/5?start=-10&stop=11
+```
+
+```json
+HTTP/1.1 200 OK
+content-length: 21
+content-type: application/json
+date: Fri, 09 Feb 2024 04:19:12 GMT
+server: uvicorn
+
+{
+    "ints": [
+        9,
+        3,
+        7,
+        -1,
+        8
+    ]
+}
+```
+
+### Invalid Value Range
+
+```json
+/rng/ints/5?start=7&stop=7
+```
+
+```json
+HTTP/1.1 422 Unprocessable Entity
+content-length: 55
+content-type: application/json
+date: Fri, 09 Feb 2024 04:30:42 GMT
+server: uvicorn
+
+{
+    "detail": "(stop=7) must be greater than (start=7)"
+}
+```
+
+### Invalid Size
+
+```json
+/rng/ints/0?start=1&stop=11
+```
+
+```json
+content-length: 203
+content-type: application/json
+date: Fri, 09 Feb 2024 04:32:51 GMT
+server: uvicorn
+
+{
+    "detail": [
+        {
+            "ctx": {
+                "ge": 1
+            },
+            "input": "0",
+            "loc": [
+                "path",
+                "size"
+            ],
+            "msg": "Input should be greater than or equal to 1",
+            "type": "greater_than_equal",
+            "url": "https://errors.pydantic.dev/2.6/v/greater_than_equal"
+        }
+    ]
+}
+```
+
+### Missing Required Query Parameters
+
+```json
+localhost:8000/rng/ints/10
+```
+
+```json
+HTTP/1.1 422 Unprocessable Entity
+content-length: 269
+content-type: application/json
+date: Fri, 09 Feb 2024 04:36:28 GMT
+server: uvicorn
+
+{
+    "detail": [
+        {
+            "input": null,
+            "loc": [
+                "query",
+                "start"
+            ],
+            "msg": "Field required",
+            "type": "missing",
+            "url": "https://errors.pydantic.dev/2.6/v/missing"
+        },
+        {
+            "input": null,
+            "loc": [
+                "query",
+                "stop"
+            ],
+            "msg": "Field required",
+            "type": "missing",
+            "url": "https://errors.pydantic.dev/2.6/v/missing"
+        }
+    ]
+}
+```
+
 ## Installation
 
 You need both [Python][2] and [pip][3]. Then you can use pip to install the
-dependencies:
+dependencies. The only core dependencies needed are `fastapi` and `uvicorn`:
 
 ```bash
 python -m pip install fastapi uvicorn
 ```
 
-Or you can install directly from the requirements file:
+Or you can install directly from the requirements file, which will also install
+type checkers and linters if you want them:
 
 ```bash
 python -m pip install -r requirements.txt
@@ -92,13 +207,6 @@ def get_user_idn(num: int, qry1: bool, qry2: str = "default"):
 When handling bad input, it is preferable to raise an `HTTPException` than
 setting the status yourself and explicitly creating a `Response` instance. This
 way the `HTTPException` is documented in `OpenAPI`.
-
-## Useful Imports
-
-```Python
-from fastapi import FastAPI, HTTPException, status
-from fastapi.responses import HTMLResponse
-```
 
 ---
 
